@@ -53,6 +53,14 @@ const RegPage = () => {
             ...inputData, 
             [e.target.name]: e.target.value
           })
+       
+    }
+
+    let handleChange1 = (e)=>{
+        setInputData({
+            ...inputData, 
+            [e.target.name]: e.target.value
+          })
        if(inputData.password.length>=0 ){
          setHideEye(true)
        }
@@ -69,14 +77,14 @@ const RegPage = () => {
         setLoader(false)
         sendEmailVerification(auth.currentUser)
           .then(() => {
-            toast.warn("A varification emain send to your mail. please check and verify it.")
+            toast.info("A varification email send to your mail. please check and verify it.")
             navigate("/login")
           });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-       console.log(errorMessage);
+       
         if(errorCode.includes("already")){
           toast.error("this email is already in use")
         }
@@ -89,45 +97,45 @@ const RegPage = () => {
         setLoader(false)
       });
 
-        // if(inputData.email==""){
-        //     toast.error("please enter email")
+        if(inputData.email==""){
+            toast.error("please enter email")
         
-        // }else{
-        //     var pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        //     if(!pattern.test(inputData.email)){
-        //         toast.error("please enter valid email")
-        //     }
-        // }
+        }else{
+            var pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if(!pattern.test(inputData.email)){
+                toast.error("please enter valid email")
+            }
+        }
 
-        // if(inputData.fullname==""){
-        //     toast.error("please enter name")
+        if(inputData.fullname==""){
+            toast.error("please enter name")
         
-        // }
-        // if(inputData.password==""){
-        //     toast.error("please enter password")
+        }
+        if(inputData.password==""){
+            toast.error("please enter password")
        
-        // }else{
-        //     let length = /(?=.{8,})/
-        //     let uppercase = /(?=.*[A-Z])/
-        //     let lowercase = /(?=.*[a-z])/
-        //     let number = /(?=.*[0-9])/
-        //     let special  = /([^A-Za-z0-9])/
-        //     if(!length.test(inputData.password)){
-        //         toast.error("The password is at least 8 characters long")
-        //     }
-        //     if(!uppercase.test(inputData.password)){
-        //         toast.error("The password has at least one uppercase letter")
-        //     }
-        //     if(!lowercase.test(inputData.password)){
-        //         toast.error("The password has at least one lowercase letter")
-        //     }
-        //     if(!number.test(inputData.password)){
-        //         toast.error("The password has at least one digit")
-        //     }
-        //     if(!special.test(inputData.password)){
-        //         toast.error("The password has at least one special character")
-        //     }
-        // }
+        }else{
+            let length = /(?=.{8,})/
+            let uppercase = /(?=.*[A-Z])/
+            let lowercase = /(?=.*[a-z])/
+            let number = /(?=.*[0-9])/
+            let special  = /([^A-Za-z0-9])/
+            if(!length.test(inputData.password)){
+                toast.error("The password is at least 8 characters long")
+            }
+            if(!uppercase.test(inputData.password)){
+                toast.error("The password has at least one uppercase letter")
+            }
+            if(!lowercase.test(inputData.password)){
+                toast.error("The password has at least one lowercase letter")
+            }
+            if(!number.test(inputData.password)){
+                toast.error("The password has at least one digit")
+            }
+            if(!special.test(inputData.password)){
+                toast.error("The password has at least one special character")
+            }
+        }
     }
 
     
@@ -149,13 +157,13 @@ const RegPage = () => {
 
             {eye ?
             <>
-             <Myinput type='text'  onChange={handleChange} name="password" id="outlined-basic" label="Password" variant="outlined" />
+             <Myinput type='text'  onChange={handleChange1} name="password" id="outlined-basic" label="Password" variant="outlined" />
              {hideEye&& <AiFillEye onClick={()=>setEye(false) } className='eyecon'/>}
               
             </>
              :
              <>
-             <Myinput type='password'  onChange={handleChange} name="password" id="outlined-basic" label="Password" variant="outlined" />
+             <Myinput type='password'  onChange={handleChange1} name="password" id="outlined-basic" label="Password" variant="outlined" />
              {hideEye&& <AiFillEyeInvisible onClick={()=>setEye(true)} className='eyecon'/>}
              
              
