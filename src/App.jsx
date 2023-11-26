@@ -13,6 +13,11 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loginpage from './pages/Loginpage';
 import Home from './pages/Home';
+import RootLayOut from './components/RootLayOut';
+import Message from './pages/Message';
+import Notification from './pages/Notification';
+import Setting from './pages/Setting';
+import Logout from './pages/Logout';
 
 
 
@@ -32,9 +37,35 @@ function App() {
       ></Route>
 
       <Route
-        path="/home"
+        path="/page"
+        element={<RootLayOut />}
+      >
+        <Route
+        path="home"
         element={<Home />}
-      ></Route>
+        ></Route>
+        
+        <Route
+        path="msg"
+        element={<Message />}
+        ></Route>
+
+        <Route
+        path="notification"
+        element={<Notification />}
+        ></Route>
+
+        <Route
+        path="setting"
+        element={<Setting />}
+        ></Route>
+
+        <Route
+        path="logout"
+        element={<Logout/>}
+        ></Route>
+
+      </Route>
       </>
     )
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -10,7 +10,11 @@ import {  toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword,sendEmailVerification } from "firebase/auth";
 import { FallingLines } from  'react-loader-spinner'
-import {AiFillEye,AiFillEyeInvisible} from "react-icons/ai"
+import {AiFillEye} from "react-icons/ai"
+import { PiEyeClosedDuotone } from "react-icons/pi";
+import {useSelector } from 'react-redux';
+import { getDatabase, ref, set } from "firebase/database";
+
 
 
 const Myinput = styled(TextField) ({
@@ -33,12 +37,14 @@ const Myinput = styled(TextField) ({
 
 const RegPage = () => {
 
+  const db = getDatabase();
+
   let [loader,setLoader]=useState(false)
   let [hideEye,setHideEye]=useState(false)
   let [eye,setEye]=useState(false)
 
     const auth = getAuth();
-
+    let userInfo = useSelector(state=>state.userInfo.value)
     let navigate = useNavigate()
 
     let [inputData,setInputData]=useState({
@@ -74,9 +80,15 @@ const RegPage = () => {
       setLoader(true)
       createUserWithEmailAndPassword(auth, inputData.email, inputData.password)
       .then((userCredential) => {
+        
         setLoader(false)
         sendEmailVerification(auth.currentUser)
           .then(() => {
+            set(ref(db, 'users/' + userCredential.user.uid), {
+              username: inputData.fullname,
+              email: userCredential.user.email,
+              profile_picture : "https://firebasestorage.googleapis.com/v0/b/chatting-app-b5b45.appspot.com/o/istockphoto-858917460-612x612.jpg?alt=media&token=3fb0d705-8ad1-40d8-8c14-1863aeb457b1"
+            });
             toast.info("A varification email send to your mail. please check and verify it.")
             navigate("/login")
           });
@@ -138,6 +150,11 @@ const RegPage = () => {
         }
     }
 
+    useEffect(()=>{
+      if(userInfo != null){
+        navigate("/page/home")
+      }
+    },[])
     
   return (
     <Grid container >
@@ -164,7 +181,7 @@ const RegPage = () => {
              :
              <>
              <Myinput type='password'  onChange={handleChange1} name="password" id="outlined-basic" label="Password" variant="outlined" />
-             {hideEye&& <AiFillEyeInvisible onClick={()=>setEye(true)} className='eyecon'/>}
+             {hideEye&& <PiEyeClosedDuotone  onClick={()=>setEye(true)} className='eyecon'/>}
              
              
              </>
