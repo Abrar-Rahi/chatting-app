@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { getDatabase, ref, onValue } from "firebase/database";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { useSelector } from 'react-redux';
 
 const UserList = () => {
    const db = getDatabase();
@@ -12,16 +13,22 @@ const UserList = () => {
    let [etarget,setEtarget]=useState("")
    let [searchList,setSearchList]=useState([])
 
+   let userInfo = useSelector(state=>state.userInfo.value)
+   
    useEffect(()=>{
       const userRef = ref(db, 'users');
       onValue(userRef, (snapshot) => {
          let arr = []
       snapshot.forEach(item =>{
-         arr.push(item.val())
+         if(item.key != userInfo.uid){
+
+            arr.push(item.val())
+         }
+         
       })
       setUserList(arr)
     
-});
+      });
    },[])
 
    let handleSearch = (e)=>{
@@ -30,7 +37,7 @@ const UserList = () => {
       )
       
       setSearchList(search)
-      console.log(searchList.length);
+      
    }
   return (
     <div className='box'>
@@ -52,7 +59,7 @@ const UserList = () => {
                <p>Hi Guys, Wassup!</p>
                </div>
                <div className='btn'>
-                  <Button variant="contained">Add Friend</Button>
+                  <Button variant="contained">+</Button>
                </div>
             </div>
             <div className='border'></div>
@@ -73,7 +80,7 @@ const UserList = () => {
          <p>Hi Guys, Wassup!</p>
          </div>
          <div className='btn'>
-            <Button variant="contained">Add Friend</Button>
+            <Button variant="contained">+</Button>
          </div>
       </div>
       <div className='border'></div>

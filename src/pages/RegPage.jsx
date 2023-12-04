@@ -8,7 +8,7 @@ import Alert from '@mui/material/Alert';
 
 import {  toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword,sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,sendEmailVerification,updateProfile } from "firebase/auth";
 import { FallingLines } from  'react-loader-spinner'
 import {AiFillEye} from "react-icons/ai"
 import { PiEyeClosedDuotone } from "react-icons/pi";
@@ -38,12 +38,12 @@ const Myinput = styled(TextField) ({
 const RegPage = () => {
 
   const db = getDatabase();
+  const auth = getAuth();
 
   let [loader,setLoader]=useState(false)
   let [hideEye,setHideEye]=useState(false)
   let [eye,setEye]=useState(false)
 
-    const auth = getAuth();
     let userInfo = useSelector(state=>state.userInfo.value)
     let navigate = useNavigate()
 
@@ -80,10 +80,12 @@ const RegPage = () => {
       setLoader(true)
       createUserWithEmailAndPassword(auth, inputData.email, inputData.password)
       .then((userCredential) => {
-        
-        setLoader(false)
-        sendEmailVerification(auth.currentUser)
-          .then(() => {
+        updateProfile(auth.currentUser, {
+          displayName: inputData.fullname , photoURL: "https://firebasestorage.googleapis.com/v0/b/chatting-app-b5b45.appspot.com/o/istockphoto-858917460-612x612.jpg?alt=media&token=3fb0d705-8ad1-40d8-8c14-1863aeb457b1"
+        }).then(() => {
+          setLoader(false)
+        // sendEmailVerification(auth.currentUser)
+        //   .then(() => {
             set(ref(db, 'users/' + userCredential.user.uid), {
               username: inputData.fullname,
               email: userCredential.user.email,
@@ -91,7 +93,9 @@ const RegPage = () => {
             });
             toast.info("A varification email send to your mail. please check and verify it.")
             navigate("/login")
-          });
+          // });
+        })
+        
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -127,26 +131,26 @@ const RegPage = () => {
             toast.error("please enter password")
        
         }else{
-            let length = /(?=.{8,})/
-            let uppercase = /(?=.*[A-Z])/
-            let lowercase = /(?=.*[a-z])/
-            let number = /(?=.*[0-9])/
-            let special  = /([^A-Za-z0-9])/
-            if(!length.test(inputData.password)){
-                toast.error("The password is at least 8 characters long")
-            }
-            if(!uppercase.test(inputData.password)){
-                toast.error("The password has at least one uppercase letter")
-            }
-            if(!lowercase.test(inputData.password)){
-                toast.error("The password has at least one lowercase letter")
-            }
-            if(!number.test(inputData.password)){
-                toast.error("The password has at least one digit")
-            }
-            if(!special.test(inputData.password)){
-                toast.error("The password has at least one special character")
-            }
+            // let length = /(?=.{8,})/
+            // let uppercase = /(?=.*[A-Z])/
+            // let lowercase = /(?=.*[a-z])/
+            // let number = /(?=.*[0-9])/
+            // let special  = /([^A-Za-z0-9])/
+            // if(!length.test(inputData.password)){
+            //     toast.error("The password is at least 8 characters long")
+            // }
+            // if(!uppercase.test(inputData.password)){
+            //     toast.error("The password has at least one uppercase letter")
+            // }
+            // if(!lowercase.test(inputData.password)){
+            //     toast.error("The password has at least one lowercase letter")
+            // }
+            // if(!number.test(inputData.password)){
+            //     toast.error("The password has at least one digit")
+            // }
+            // if(!special.test(inputData.password)){
+            //     toast.error("The password has at least one special character")
+            // }
         }
     }
 

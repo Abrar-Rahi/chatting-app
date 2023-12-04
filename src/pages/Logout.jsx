@@ -11,7 +11,7 @@ const Logout = () => {
     const auth = getAuth();
     let navigate = useNavigate()
     let dispatch = useDispatch()
-    // let userInfo = useSelector(state=>state.userInfo.value)
+    
     
   
     let handleSignOut = ()=>{
@@ -23,11 +23,7 @@ const Logout = () => {
       })
     }
   
-    // useEffect(()=>{
-    //   if(userInfo == null){
-    //     navigate("/login")
-    //   }
-    // },[])
+    
   return (
          <Button onClick={handleSignOut} variant="outlined" color="error">
             LogOut

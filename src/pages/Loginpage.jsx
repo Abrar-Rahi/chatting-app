@@ -103,12 +103,12 @@ let handleLogin = ()=>{
       dispatch(loginInfo(userCredential.user))
       localStorage.setItem("user",JSON.stringify(userCredential.user))
       setLoader(false)
-      if(userCredential.user.emailVerified){
+      // if(userCredential.user.emailVerified){
          navigate("/page/home")
-      }else{
-        toast.error("email not verified")
-        setLoader(false)
-      }
+      // }else{
+      //   toast.error("email not verified")
+      //   setLoader(false)
+      // }
     })
     .catch((error) => {
       const errorCode = error.code;

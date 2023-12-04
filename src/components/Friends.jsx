@@ -7,7 +7,7 @@ const Friends = () => {
   return (
     <div className='box'>
         <div className='heading'>
-            <h2>Groups List</h2>
+            <h2>Friends</h2>
             <BsThreeDotsVertical />
         </div>
         <div className='id'>
