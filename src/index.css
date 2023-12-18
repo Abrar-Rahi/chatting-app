@@ -84,7 +84,9 @@
 }
 .profileName{
   margin-top: 10px;
-  color: rgb(255, 199, 199);  
+  color: rgb(255, 199, 199); 
+  display: flex;
+  justify-content: center;
 }
 .allIcon{
     margin-top: 98px;
@@ -160,7 +162,7 @@
 .id{
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     
 }
 .id img{
@@ -181,7 +183,11 @@
     color: #4D4D4D;
 }
 .btn{
-    margin-left: 92px;
+    display:flex ;
+    column-gap: 10px;
+}
+.LogoutBtn{
+    margin-top: 500px;
 }
 
 .border{

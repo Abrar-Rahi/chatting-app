@@ -16,6 +16,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { getStorage, ref, uploadString,getDownloadURL } from "firebase/storage";
+import { getDatabase, ref as dref, set } from "firebase/database";
 import { getAuth,updateProfile } from "firebase/auth";
 import { loginInfo } from '../slices/userSlice';
 import { Watch } from  'react-loader-spinner'
@@ -50,13 +51,17 @@ const style = {
  });
 
 const Sidebar = () => {
+
+  const db = getDatabase();
+  const storage = getStorage();
+  const auth = getAuth();
+
    let navigate = useNavigate()
    let dispatch = useDispatch()
    let userInfo = useSelector(state=>state.userInfo.value)
+   
  
    
-   const storage = getStorage();
-   const auth = getAuth();
 
    let [loader,setLoader]=useState(false)
    const [open, setOpen] = React.useState(false);
@@ -93,11 +98,18 @@ const Sidebar = () => {
           updateProfile(auth.currentUser, {
              photoURL: downloadURL
           }).then(()=>{
-            dispatch(loginInfo({...userInfo, photoURL: downloadURL }))
-            localStorage.setItem("user",JSON.stringify({...userInfo, photoURL: downloadURL}))
-            setLoader(false)
-            setOpen(false)
-            setImage("")
+            set(dref(db, 'users/' + userInfo.uid), {
+              username: userInfo.displayName,
+              email: userInfo.email,
+              profile_picture : downloadURL
+            }).then(()=>{
+
+              dispatch(loginInfo({...userInfo, photoURL: downloadURL }))
+              localStorage.setItem("user",JSON.stringify({...userInfo, photoURL: downloadURL}))
+              setLoader(false)
+              setOpen(false)
+              setImage("")
+            })
           })
         });
       });
@@ -111,7 +123,9 @@ const Sidebar = () => {
      <div className='holeSideBar'>
         <div onClick={handleOpen}>
         <img className='profilePic' src={userInfo.photoURL} alt="Profile pic" />
-        <h3 className='profileName'>{userInfo.displayName}</h3>
+        <div>
+           <h3 className='profileName'>{userInfo.displayName}</h3>
+        </div>
         </div>
         <div className='allIcon'>
            

@@ -2,27 +2,29 @@ import React, { useEffect, useState } from 'react'
 import { BsThreeDotsVertical } from "react-icons/bs";
 import profGroup from "../assets/profGroup.png"
 import Button from '@mui/material/Button';
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue,set,push } from "firebase/database";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useSelector } from 'react-redux';
+import {  toast } from 'react-toastify';
 
 const UserList = () => {
    const db = getDatabase();
    let [userList,setUserList]=useState([])
    let [etarget,setEtarget]=useState("")
    let [searchList,setSearchList]=useState([])
+   let [frId,setFrId]=useState([])
+   let [fid,setFid]=useState([])
 
    let userInfo = useSelector(state=>state.userInfo.value)
-   
+  
    useEffect(()=>{
       const userRef = ref(db, 'users');
       onValue(userRef, (snapshot) => {
          let arr = []
       snapshot.forEach(item =>{
          if(item.key != userInfo.uid){
-
-            arr.push(item.val())
+            arr.push({...item.val(), userid : item.key})
          }
          
       })
@@ -31,13 +33,52 @@ const UserList = () => {
       });
    },[])
 
+   useEffect(()=>{
+      const friendReqRef = ref(db, 'friendRequest');
+      onValue(friendReqRef, (snapshot) => {
+         let arr = []
+        snapshot.forEach(item =>{
+         
+            arr.push(item.val().whosendId + item.val().whoreceiveId)
+
+        })
+        setFrId(arr)
+      });
+      
+   },[])
+
+   useEffect(()=>{
+      const friendsRef = ref(db, 'friends');
+      onValue(friendsRef, (snapshot) => {
+         let arr = []
+        snapshot.forEach(item =>{
+         
+            arr.push(item.val().whosendId + item.val().whoreceiveId)
+
+        })
+        setFid(arr)
+      });
+      
+   },[])
+
    let handleSearch = (e)=>{
       setEtarget(e.target.value)
       let search = userList.filter(item =>item.username.toLowerCase().includes(e.target.value.toLowerCase())
       )
       
-      setSearchList(search)
+      setSearchList(search) 
+   }
+
+   let handleFrndReq = (item)=>{
       
+      set(push(ref(db, 'friendRequest')), {
+         whosendId : userInfo.uid,
+         whosendName : userInfo.displayName,
+         whoreceiveId : item.userid,
+         whoreceiveName : item.username,
+       }).then(()=>{
+          toast("friend request send")
+       })
    }
   return (
     <div className='box'>
@@ -58,9 +99,23 @@ const UserList = () => {
                <h3>{item.username}</h3>
                <p>Hi Guys, Wassup!</p>
                </div>
-               <div className='btn'>
+            {frId.includes(item.userid + userInfo.uid) || frId.includes(userInfo.uid + item.userid) ? 
+               
+               <div className='btn' >
+                  <Button variant="contained" disabled>Pendind</Button>
+               </div>
+            :
+            fid.includes(item.userid + userInfo.uid) || fid.includes(userInfo.uid + item.userid) ?
+               <div className='btn' >
+               <Button variant="contained">friends</Button>
+               </div>
+            :
+
+               <div className='btn' onClick={()=>handleFrndReq(item)}>
                   <Button variant="contained">+</Button>
                </div>
+
+            }
             </div>
             <div className='border'></div>
          </>
@@ -79,9 +134,23 @@ const UserList = () => {
          <h3>{item.username}</h3>
          <p>Hi Guys, Wassup!</p>
          </div>
-         <div className='btn'>
-            <Button variant="contained">+</Button>
-         </div>
+         {frId.includes(item.userid + userInfo.uid) || frId.includes(userInfo.uid + item.userid) ? 
+               
+               <div className='btn' >
+                  <Button variant="contained" disabled>Pendind</Button>
+               </div>
+            :
+            fid.includes(item.userid + userInfo.uid) || fid.includes(userInfo.uid + item.userid) ?
+               <div className='btn' >
+               <Button variant="contained">friends</Button>
+               </div>
+            :
+
+               <div className='btn' onClick={()=>handleFrndReq(item)}>
+                  <Button variant="contained">+</Button>
+               </div>
+
+            }
       </div>
       <div className='border'></div>
       </>
