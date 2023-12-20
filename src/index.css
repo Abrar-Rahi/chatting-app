@@ -238,3 +238,9 @@
     display: flex;
     column-gap: 20px;
 }
+.blocked{
+    font-family: "poppins";
+    font-weight: 500;
+    font-size: 14px; 
+    color: red;
+}

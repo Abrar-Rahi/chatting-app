@@ -15,6 +15,8 @@ const UserList = () => {
    let [searchList,setSearchList]=useState([])
    let [frId,setFrId]=useState([])
    let [fid,setFid]=useState([])
+   let [blockId,setBlockId]=useState([])
+   
 
    let userInfo = useSelector(state=>state.userInfo.value)
   
@@ -58,6 +60,21 @@ const UserList = () => {
         })
         setFid(arr)
       });
+      
+   },[])
+
+   useEffect(()=>{
+      const blockRef = ref(db, 'block');
+      onValue(blockRef, (snapshot) => {
+         let arr = []
+        snapshot.forEach(item =>{
+         
+            arr.push(item.val().blockById + item.val().blockedId)
+
+        })
+        setBlockId(arr)
+      });
+      
       
    },[])
 
@@ -106,10 +123,25 @@ const UserList = () => {
                </div>
             :
             fid.includes(item.userid + userInfo.uid) || fid.includes(userInfo.uid + item.userid) ?
+
                <div className='btn' >
-               <Button variant="contained">friends</Button>
+               <Button variant="contained" disabled>friends</Button>
                </div>
             :
+            blockId.includes(userInfo.uid + item.userid) ?
+
+               <div className='btn' >
+               <Button variant="contained" disabled>Unblock</Button>
+               </div>
+            :
+            blockId.includes( item.userid+ userInfo.uid) ?
+
+            
+            <div className='blocked'>{`${item.username} blocked you`}</div>
+            
+
+            :
+
 
                <div className='btn' onClick={()=>handleFrndReq(item)}>
                   <Button variant="contained">+</Button>
@@ -145,6 +177,21 @@ const UserList = () => {
                <Button variant="contained">friends</Button>
                </div>
             :
+
+            blockId.includes(userInfo.uid + item.userid) ?
+
+               <div className='btn' >
+               <Button variant="contained" disabled>Unblock</Button>
+               </div>
+            :
+            blockId.includes( item.userid+ userInfo.uid) ?
+
+            
+            <div className='blocked'>{`${item.username} blocked you`}</div>
+            
+
+            :
+
 
                <div className='btn' onClick={()=>handleFrndReq(item)}>
                   <Button variant="contained">+</Button>
