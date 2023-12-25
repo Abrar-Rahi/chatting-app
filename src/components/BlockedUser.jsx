@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { BsThreeDotsVertical } from "react-icons/bs";
 import profGroup from "../assets/profGroup.png"
 import Button from '@mui/material/Button';
-import { getDatabase, ref, onValue,remove } from "firebase/database";
+import { getDatabase, ref, onValue,remove,set,push} from "firebase/database";
 import { useSelector } from 'react-redux';
 
 const BlockedUser = () => {
@@ -23,7 +23,14 @@ const BlockedUser = () => {
    },[])
 
    let handleUnblock = (item)=>{
-      remove(ref(db,'block/'+ item.blockId))
+      set(push(ref(db, 'friends')), {
+         whoreceiveId : item.blockedId,
+         whoreceiveName : item.blockedName ,
+         whosendId : userInfo.uid,
+         whosendName : userInfo.displayName,
+       }).then(()=>{
+          remove(ref(db,'block/'+ item.blockId))
+      })
    }
 
   return (

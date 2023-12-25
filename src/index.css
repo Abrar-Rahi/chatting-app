@@ -244,3 +244,13 @@
     font-size: 14px; 
     color: red;
 }
+
+.textField{
+  width: 70%;
+  
+}
+.CreateGroup{
+    height: 55px;
+    width: 100px;
+    
+}

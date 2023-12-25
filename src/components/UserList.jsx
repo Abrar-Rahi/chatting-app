@@ -69,7 +69,7 @@ const UserList = () => {
          let arr = []
         snapshot.forEach(item =>{
          
-            arr.push(item.val().blockById + item.val().blockedId)
+            arr.push(item.val().blockById+item.val().blockedId)
 
         })
         setBlockId(arr)
@@ -134,15 +134,13 @@ const UserList = () => {
                <Button variant="contained" disabled>Unblock</Button>
                </div>
             :
-            blockId.includes( item.userid+ userInfo.uid) ?
+            blockId.includes((item.userid + userInfo.uid )) ?
 
             
             <div className='blocked'>{`${item.username} blocked you`}</div>
             
 
             :
-
-
                <div className='btn' onClick={()=>handleFrndReq(item)}>
                   <Button variant="contained">+</Button>
                </div>
