@@ -4,11 +4,13 @@ import profGroup from "../assets/profGroup.png"
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { getDatabase, ref, onValue,remove,set,push} from "firebase/database";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { msgInfo } from '../slices/messageSlice';
 
-const GroupList = () => {
+const GroupList = ({type,className}) => {
    const db = getDatabase();
 
+   let dispatch = useDispatch()
    let userInfo = useSelector(state=>state.userInfo.value)
 
    let [groupPopup,setGroupPopup]= useState(false)
@@ -53,16 +55,26 @@ let handleGroupRequest = (item)=>{
 }
 
 
+let handleprofileName = (item)=>{
+      dispatch(msgInfo({name:item.groupName,id:item.groupId}))
+      localStorage.setItem("msg",JSON.stringify({name:item.groupName,id:item.groupId}))
+}
+
+
    
   return (
     <div className='box'>
         <div className='heading'>
-            <h2>Groups List</h2>
-            {groupPopup ? 
-             <Button onClick={()=>setGroupPopup(false)} variant="contained">Back</Button>
-            :
-             <Button onClick={()=>setGroupPopup(true)} variant="contained">Create Group</Button>
-            }
+           <h2>Groups List</h2>
+      {type == "msgBox" ?
+         ""
+      :
+         groupPopup ? 
+               <Button onClick={()=>setGroupPopup(false)} variant="contained">Back</Button>
+               :
+               <Button onClick={()=>setGroupPopup(true)} variant="contained">Create Group</Button>
+      }
+            
         </div>
         {groupPopup ?
         <>
@@ -73,15 +85,17 @@ let handleGroupRequest = (item)=>{
       <>
       {groupList.map(item =>(
       <>
-         <div className='id'>
+         <div className={`id ${className}`} onClick={()=> type=="msgBox" && handleprofileName(item)}>
             <img src={profGroup} alt="Pp" />
             <div>
             <h3>{item.groupName}</h3>
             <p>{`admin: ${item.admin}`}</p>
             </div>
+            {type != "msgBox" &&
             <div className='btn'>
                <Button onClick={()=>handleGroupRequest(item)} variant="contained">Join</Button>
             </div>
+            }
          </div>
          <div className='border'></div>
       </>

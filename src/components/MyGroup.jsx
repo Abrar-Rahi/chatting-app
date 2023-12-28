@@ -28,8 +28,8 @@ const Friends = () => {
 
    let handleCheckRequest = (Gitem)=>{
       setCheckRequest(true)
-      const blockRef = ref(db, 'grouprequest');
-      onValue(blockRef, (snapshot) => {
+      const groupRequestRef = ref(db, 'grouprequest');
+      onValue(groupRequestRef, (snapshot) => {
          let arr = []
         snapshot.forEach(item =>{
          if(item.val().requestGroupId == Gitem.groupId){

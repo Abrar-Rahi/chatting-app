@@ -11,35 +11,34 @@ import BlockedUser from '../components/BlockedUser';
 
 
 const Home = () => {
-  let userInfo = useSelector(state=>state.userInfo.value)
+  let userInfo = useSelector(state => state.userInfo.value)
   let navigate = useNavigate()
-  useEffect(()=>{
-    if(userInfo == null){
+  useEffect(() => {
+    if (userInfo == null) {
       navigate("/login")
     }
-  },[])
+  }, [])
   return (
     <div>
-       <Grid container spacing={3}>
+      <Grid container spacing={3}>
         <Grid item xs={4}>
-          <GroupList/>
+          <GroupList />
         </Grid>
         <Grid item xs={4}>
-          <Friends/>
+          <Friends />
         </Grid>
         <Grid item xs={4}>
-          <UserList/>
+          <UserList />
         </Grid>
         <Grid item xs={4}>
-          <RequistFriend/>
+          <RequistFriend />
         </Grid>
         <Grid item xs={4}>
-          <MyGroup/>
+          <MyGroup />
         </Grid>
         <Grid item xs={4}>
-          <BlockedUser/>
+          <BlockedUser />
         </Grid>
-        
       </Grid>
     </div>
   )
