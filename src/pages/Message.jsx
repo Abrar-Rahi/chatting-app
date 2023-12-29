@@ -7,6 +7,7 @@ import ChatMsg from '../components/ChatMsg';
 const Message = () => {
   return (
     <div>
+      
        <Grid container spacing={3}>
         <Grid item xs={4}>
           <GroupList type="msgBox" className="hover"/>

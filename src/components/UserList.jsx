@@ -69,7 +69,7 @@ const UserList = () => {
          let arr = []
         snapshot.forEach(item =>{
          
-            arr.push(item.val().blockById+item.val().blockedId)
+            arr.push(item.val().blockById + item.val().blockedId)
 
         })
         setBlockId(arr)

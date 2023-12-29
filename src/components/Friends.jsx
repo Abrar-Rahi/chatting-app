@@ -69,12 +69,12 @@ const Friends = ({type,className}) => {
 
    let handleprofileName = (item)=>{
       if(userInfo.uid == item.whosendId){
-         dispatch(msgInfo({name:item.whoreceiveName, id:item.whoreceiveId}))
-         localStorage.setItem("msg",JSON.stringify({name:item.whoreceiveName, id:item.whoreceiveId}))
+         dispatch(msgInfo({name:item.whoreceiveName, id:item.whoreceiveId, status:"single"}))
+         localStorage.setItem("msg",JSON.stringify({name:item.whoreceiveName, id:item.whoreceiveId, status:"single"}))
          
       }else{
-         dispatch(msgInfo({name:item.whosendName, id:item.whosendId}))
-         localStorage.setItem("msg",JSON.stringify({name:item.whosendName, id:item.whosendId}))
+         dispatch(msgInfo({name:item.whosendName, id:item.whosendId, status:"single"}))
+         localStorage.setItem("msg",JSON.stringify({name:item.whosendName, id:item.whosendId, status:"single"}))
       } 
 
    }

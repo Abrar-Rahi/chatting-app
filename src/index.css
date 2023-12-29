@@ -293,6 +293,7 @@
 }
 .msgChatBox{
     margin: 50px 0;
+    height: 700px;
 }
 .msgText{
     position: relative;

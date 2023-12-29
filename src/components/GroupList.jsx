@@ -17,6 +17,7 @@ const GroupList = ({type,className}) => {
    let [createGroup,setCreateGroup]= useState("")
    let [groupList,setGroupList]= useState([])
    
+   
 
   let handleCreateGroup = ()=>{
    set(push(ref(db, 'groups')), {
