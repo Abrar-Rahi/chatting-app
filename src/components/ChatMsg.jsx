@@ -6,6 +6,8 @@ import ModalImage from "react-modal-image";
 import { FiSend } from "react-icons/fi";
 import { useSelector } from 'react-redux';
 import { getDatabase, ref, onValue,remove,set,push } from "firebase/database";
+import moment from 'moment';
+
 
 const ChatMsg = () => {
   const db = getDatabase();
@@ -23,11 +25,12 @@ let handleMsgChange= (e)=>{
  let handlesendMsg = ()=>{
   if(messageInfo.status == "single"){
     set(push(ref(db, 'singleMsg')), {
-      whoSendMsg : userInfo.displayName,
+     whoSendMsg : userInfo.displayName,
      whoSendMsgId : userInfo.uid,
      whoReceiveMsg : messageInfo.name,
      whoReceiveMsgId : messageInfo.id,
-     msg : msg
+     msg : msg,
+     time : moment().calendar()
     }).then(()=>{
       setMsg("");
     })
@@ -75,6 +78,8 @@ let handleMsgChange= (e)=>{
           <div>
             <p className='msgText'>{item.msg}</p>
           </div>
+            <p className='receivetime'>{item.time}</p>
+          
           {/* receive msg end */}
          </>
          }
@@ -85,6 +90,7 @@ let handleMsgChange= (e)=>{
             <div className='sendMsg'>
               <p className='msgText sendText'>{item.msg}</p>
             </div>
+              <p className='sendtime'>{item.time}</p>
         {/* send msg end */}
         </>
         }
