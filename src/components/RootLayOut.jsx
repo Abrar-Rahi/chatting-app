@@ -6,15 +6,15 @@ import Sidebar from './Sidebar';
 const RootLayOut = () => {
   return (
     <>
-    <Grid container spacing={0}>
+      <Grid container spacing={0}>
         <Grid item xs={2}>
-            <Sidebar/>
+          <Sidebar />
         </Grid>
         <Grid item xs={10}>
-            <Outlet/>
+          <Outlet />
         </Grid>
-    </Grid>
-    
+      </Grid>
+
     </>
   )
 }

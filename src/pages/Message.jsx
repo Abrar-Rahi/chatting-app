@@ -7,14 +7,14 @@ import ChatMsg from '../components/ChatMsg';
 const Message = () => {
   return (
     <div>
-      
-       <Grid container spacing={3}>
+
+      <Grid container spacing={3}>
         <Grid item xs={4}>
-          <GroupList type="msgBox" className="hover"/>
-          <Friends type="msgBox" className="hover"/>
+          <GroupList type="msgBox" className="hover" />
+          <Friends type="msgBox" className="hover" />
         </Grid>
         <Grid item xs={8}>
-          <ChatMsg/>
+          <ChatMsg />
         </Grid>
       </Grid>
     </div>
